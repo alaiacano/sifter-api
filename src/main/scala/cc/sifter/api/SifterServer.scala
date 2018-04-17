@@ -17,6 +17,7 @@ class SifterServer extends HttpServer {
       .filter[TraceIdMDCFilter[Request, Response]]
       .filter[CommonFilters]
       .add[ExperimentInfoController]
-      .add[BanditRegistrationController]
+      .add[ExperimentRegistrationController]
+      .add[ExperimentFeedbackController]
   }
 }

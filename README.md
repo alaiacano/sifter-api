@@ -17,7 +17,7 @@ Process for creating an experiment, making some requests, and reporting reward:
 First create a new experiment. We will use an `EpsilonGreedy` bandit with an epsilon value of 0.5, and three Arms:
 
 ```bash
-curl -d '{"name":"adam", "algo":"epsilon_greedy", "epsilon": 0.5, "arms": ["moe", "larry", "curly"]}' -H "Content-Type: application/json" -X POST http://localhost:8888/create | jq .
+curl -d '{"name":"adam", "epsilon": 0.5, "arms": ["moe", "larry", "curly"]}' -H "Content-Type: application/json" -X POST http://localhost:8888/create/epsilon_greedy | jq .
 ```
 
 The result: a new experiment called `adam` with three arms: `moe`, `larry`, and `curly`.
