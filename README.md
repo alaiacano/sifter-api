@@ -24,9 +24,11 @@ You are looking at the first commit, based on pretty much all of the default Twi
 
 # Experiment Lifecycle
 
-Process for creating an experiment, making some requests, and reporting reward:
+Let's walk through an example of creating an experiment, making some requests, and reporting reward.
 
-First create a new experiment. We will use an `EpsilonGreedy` bandit with an epsilon value of 0.5, and three Arms:
+The goal of the experiment: Show people Three Stooges video that is Moe-centric, Larry-centric, or Curly-centric. Whichever stooge the people like most, we will show the most.
+
+First create a new experiment. We will use an `EpsilonGreedy` bandit with an epsilon value of 0.5 (_extremely_ exploratory), and an Arm for each Stooge:
 
 ```bash
 curl -d '{"name":"adam", "epsilon": 0.5, "arms": ["moe", "larry", "curly"]}' -H "Content-Type: application/json" -X POST http://localhost:8888/create/epsilon_greedy | jq .
@@ -97,7 +99,9 @@ curl -d '{"experiment_id":1}' -H "Content-Type: application/json" -X POST http:/
   "value": 0
 }
 ```
-It decided we wanted to show `curly` first. Let's say the user liked it, so we report a value of `10.0`
+
+The Epsilon Greedy algorithm decided we wanted to show `curly`. So we show that video. Let's say the viewer watched it for 10 seconds, so we report a value of `10.0`
+
 ```bash
 curl -d '{"experiment_id":1, "arm_id": "curly", "value": 10.0}' -H "Content-Type: application/json" -X POST http://localhost:8888/reward | jq .
 ```
@@ -136,10 +140,11 @@ curl -d '{"experiment_id":1, "arm_id": "curly", "value": 10.0}' -H "Content-Type
 }
 ```
 
-Now we've updated the value associated with the `curly` arm, and that information will be used the next time we `pull`. 
+Now we've updated the value associated with the `curly` arm, and that information will be used the next time we `pull`.
 
+The next time we want to show a video, we will `pull` again, be assigned a Stooge to show, and then report back how many seconds the viewer watched the video. Eventually, the most popular Stooge will be played the most.
 
-# Up next
-- Use a real database instead of just a `collection.mutable.Map`
+# Up next for this project
+- Use a real datastore instead of just a `collection.mutable.Map`
 - Initialize experiments with pre-set weights
 - "Tests"
