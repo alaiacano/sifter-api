@@ -32,15 +32,21 @@ class ExperimentRegistrationController @Inject() (DB: Storage) extends Controlle
     createExperiment(request.name, bandit)
   }
 
-  post("/create/soft_max") { request: CreateSoftMaxRequest =>
+  post("/create/softmax") { request: CreateSoftMaxRequest =>
     val arms = request.arms.map(Arm(_))
     val bandit = SoftMax(arms, request.temperature)
     createExperiment(request.name, bandit)
   }
 
-  post("/create/annealing_soft_max") { request: CreateAnnealingSoftMaxRequest =>
+  post("/create/annealing_softmax") { request: CreateAnnealingSoftMaxRequest =>
     val arms = request.arms.map(Arm(_))
     val bandit = AnnealingSoftMax(arms)
+    createExperiment(request.name, bandit)
+  }
+
+  post("/create/exp3") { request: CreateExp3Request =>
+    val arms = request.arms.map(Arm(_))
+    val bandit = Exp3(arms, request.gamma)
     createExperiment(request.name, bandit)
   }
 

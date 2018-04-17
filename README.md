@@ -11,6 +11,10 @@ To run:
 JAVA_OPTS="-Dlog.service.output=/dev/stdout -Dlog.access.output=/dev/stdout" ./sbt run
 ```
 
+Config options:
+
+* `--storage` will eventuall provide options for what kind of storage backend to use (redis, memcache, etc).
+
 # Status
 You are looking at the first commit, based on pretty much all of the default Twitter Server options.
 
@@ -21,6 +25,13 @@ You are looking at the first commit, based on pretty much all of the default Twi
 * Reward - This is the _outcome_ of a particular interaction with a user. The reward could be 1.0 or 0.0 if a user does/does not click. It could be the total dollars spent after clicking, and so on.
 * Request Count - Each Arm has a _request count_. This is how many times this Arm was returned in a HTTP request.
 * Pull Count - This is how many times a _reward has been registered_ for the particular arm. If you report a reward value back for every single request, this should be approximately equal to the Request Count.
+
+# Algorithms
+* Epsilon Greedy
+* Annealing Epsilon Greedy
+* Softmax
+* Annealing Softmax
+* EXP3
 
 # Experiment Lifecycle
 
