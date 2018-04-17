@@ -2,8 +2,8 @@
 
 It's based on:
 
-* [finatra](https://www.github.com/twitter/finatra) for the web server
-* [sifter-lib](https:/www.github.com/alaiacano/sifter-lib) for the bandit algorithms
+* [finatra](https://github.com/twitter/finatra) for the web server
+* [sifter-lib](https://github.com/alaiacano/sifter-lib) for the bandit algorithms
 
 To run:
 
