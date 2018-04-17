@@ -1,6 +1,18 @@
+**Sifter** is an API for running [multi-armed bandit](https://en.wikipedia.org/wiki/Multi-armed_bandit) experiments.
+
+It's based on:
+
+* [finatra](https://www.github.com/twitter/finatra) for the web server
+* [sifter-lib](https:/www.github.com/alaiacano/sifter-lib) for the bandit algorithms
+
+To run:
+
 ```
 JAVA_OPTS="-Dlog.service.output=/dev/stdout -Dlog.access.output=/dev/stdout" ./sbt run
 ```
+
+# Status
+You are looking at the first commit, based on pretty much all of the default Twitter Server options.
 
 # Glossary
 * Experiment - a particular test you want to run. There will be different variants (Arms) that get selected. Testing if a user prefers clicking on `Red`, `Green`, or `Blue` links is an experiment.
@@ -10,7 +22,7 @@ JAVA_OPTS="-Dlog.service.output=/dev/stdout -Dlog.access.output=/dev/stdout" ./s
 * Request Count - Each Arm has a _request count_. This is how many times this Arm was returned in a HTTP request.
 * Pull Count - This is how many times a _reward has been registered_ for the particular arm. If you report a reward value back for every single request, this should be approximately equal to the Request Count.
 
-# Lifecycle
+# Experiment Lifecycle
 
 Process for creating an experiment, making some requests, and reporting reward:
 
@@ -63,6 +75,9 @@ Note that the experiment is _not yet live_. We need to enable that.
 ```bash
 curl -d '{"id":1, "is_live": true}' -H "Content-Type: application/json" -X POST http://localhost:8888/activate | jq .
 ```
+
+Which sets `isLive` to `true`:
+
 ```json
 {
   ...,
@@ -72,6 +87,7 @@ curl -d '{"id":1, "is_live": true}' -H "Content-Type: application/json" -X POST 
 ```
 
 Now that it's live, we can ask it for which Arm to display first:
+
 ```bash
 curl -d '{"experiment_id":1}' -H "Content-Type: application/json" -X POST http://localhost:8888/pull | jq .
 ```
@@ -126,5 +142,4 @@ Now we've updated the value associated with the `curly` arm, and that informatio
 # Up next
 - Use a real database instead of just a `collection.mutable.Map`
 - Initialize experiments with pre-set weights
-- Incorporate the other bandit algorithms available in [sifter-lib](http://www.github.com/alaiacano/sifter-lib)
 - "Tests"
