@@ -2,20 +2,16 @@ package cc.sifter.api.controllers
 
 import javax.inject.Singleton
 
+import cc.sifter.api.db.Storage
+import com.google.inject.Inject
 import com.twitter.finagle.http.Request
 import com.twitter.finatra.http.Controller
 
 @Singleton
-class ExperimentInfoController extends Controller {
-
-  import cc.sifter.api.db.InMemoryDatabase.DB
-
-  get("/list") { request: Request =>
-    response.ok.json(Map("live_experiments" -> DB.keys))
-  }
+class ExperimentInfoController @Inject() (DB: Storage) extends Controller {
 
   get("/db") { request: Request =>
-    response.ok.json(DB.mapValues(_.status))
+    response.ok.json(DB.status)
   }
 
   get("/status/:id") { request: Request =>

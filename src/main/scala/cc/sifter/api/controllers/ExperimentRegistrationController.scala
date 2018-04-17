@@ -4,13 +4,13 @@ import javax.inject.{Inject, Singleton}
 
 import cc.sifter.api.Experiment
 import cc.sifter._
+import cc.sifter.api.db.Storage
 import cc.sifter.api.requests._
 import com.twitter.finatra.http.Controller
 import com.twitter.finatra.http.response.ResponseBuilder
 
 @Singleton
-class ExperimentRegistrationController @Inject(DB: InMemoryDatabase) extends Controller {
-
+class ExperimentRegistrationController @Inject() (DB: Storage) extends Controller {
   /**
     * Creates a new experiment.
     *
@@ -46,7 +46,7 @@ class ExperimentRegistrationController @Inject(DB: InMemoryDatabase) extends Con
 
   // helper to insert the new experiment into the database.
   private def createExperiment(name: String, bandit: Bandit): ResponseBuilder#EnrichedResponse = {
-    val nextId = if (DB.keys.nonEmpty) DB.keys.max + 1 else 1L
+    val nextId = DB.nextId
     val exp = Experiment(nextId, name, bandit, isLive = false)
 
     DB.put(nextId, exp)
